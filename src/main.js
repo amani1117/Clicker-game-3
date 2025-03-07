@@ -140,7 +140,7 @@ k.scene("game", () => {
       name: "New Upgrade!",
       cost: 10,
       action: () => {
-        clickMultiplier += 1;
+        clickMultiplier += 5;
         chup = k.add([
           k.sprite("chaxe"),
           k.pos(k.center().x, k.center().y - 200),
@@ -240,7 +240,7 @@ k.scene("game", () => {
       name: "Final Product and a special surprise!!",
       cost: 50000,
       action: () => {
-        clickMultiplier += 60;
+        clickMultiplier += 50;
         if (plant) {
           k.destroy(plant);
         }
@@ -277,7 +277,7 @@ k.scene("game", () => {
           k.area(),
         ]);
         k.wait(4, () => {
-          k.go("Mainmenu");
+          k.go("mainMenu",clickMultiplier+=20);
         });
       },
     },
