@@ -1,13 +1,11 @@
 import kaplay from "kaplay";
 
-// Initialize Kaplay
 const k = kaplay();
 
-// Load assets
 k.loadSprite("grass", "pixgrass.jpg");
-k.loadSprite("playbut","UI Big Play Button.png",{
-  sliceX:2,
-  sliceY:2,
+k.loadSprite("playbut", "UI Big Play Button.png", {
+  sliceX: 2,
+  sliceY: 2,
 });
 k.loadSprite("button", "Square Buttons 26x26.png", {
   sliceX: 2,
@@ -40,7 +38,6 @@ k.loadSprite("yaych", "Emoji_Spritesheet_Free.png", {
   sliceY: 19,
   anims: {
     yay: { from: 25, to: 26, loop: true, speed: 5 },
-
   },
 });
 k.loadSprite("bed", "Basic_Furniture.png", {
@@ -49,9 +46,7 @@ k.loadSprite("bed", "Basic_Furniture.png", {
 });
 k.loadFont("p", "pixelFont-7-8x14-sproutLands.ttf");
 
-// Main Menu Scene
 k.scene("mainMenu", () => {
-  // Add background
   k.add([
     k.sprite("grass"),
     k.pos(0, 0),
@@ -59,31 +54,26 @@ k.scene("mainMenu", () => {
     k.fixed(),
   ]);
 
-  // Add title
   k.add([
     k.text("Crop Growing Clicker Game :3", { font: "p", size: 50 }),
     k.pos(k.center().x - 150, k.center().y - 100),
     k.fixed(),
   ]);
 
-  // Add start button
   const startButton = k.add([
-    k.sprite("playbut",{frame:2}),
+    k.sprite("playbut", { frame: 2 }),
     k.pos(k.center().x - 50, k.center().y + 50),
     k.scale(4),
     k.area(),
     "startButton",
   ]);
 
-  // On click event for start button
   startButton.onClick(() => {
-    k.go("game"); // Transition to the game scene
+    k.go("game");
   });
 });
 
-// Game Scene
 k.scene("game", () => {
-  // Game variables
   let clicks = 0;
   let clickMultiplier = 1;
   let passiveIncome = 0;
@@ -105,7 +95,6 @@ k.scene("game", () => {
   let cost400UpgradeText = null;
   let cost500UpgradeText = null;
 
-  // Display click counter
   k.add([
     k.sprite("grass"),
     k.pos(0, 0),
@@ -119,7 +108,6 @@ k.scene("game", () => {
     k.fixed(),
   ]);
 
-  // Clickable sprite
   const b = k.add([
     k.sprite("button"),
     k.pos(k.center().x - 160, k.center().y - 50),
@@ -127,18 +115,14 @@ k.scene("game", () => {
     k.scale(4),
     "clickable",
   ]);
-
-  // Character sprite
   const ch = k.add([
     k.sprite("ch"),
     k.pos(k.center().x + 100, k.center().y - 200),
     k.scale(10),
   ]);
 
-  // Play the standing animation
   ch.play("stand");
 
-  // On click event for the button
   b.onClick(() => {
     clicks += clickMultiplier;
     clickText.text = `Clicks: ${formatNumber(clicks)}`;
@@ -151,7 +135,6 @@ k.scene("game", () => {
     });
   });
 
-  // Unlockable upgrades
   const upgrades = [
     {
       name: "New Upgrade!",
@@ -293,14 +276,13 @@ k.scene("game", () => {
           k.scale(15),
           k.area(),
         ]);
-        k.wait(4,()=>{
+        k.wait(4, () => {
           k.go("Mainmenu");
-        })
+        });
       },
     },
   ];
 
-  // Display upgrades
   upgrades.forEach((upgrade, index) => {
     const y = 90 + index * 40;
     const upgradeText = k.add([
@@ -309,7 +291,6 @@ k.scene("game", () => {
       k.fixed(),
     ]);
 
-    // Track the cost 5 upgrade text
     if (upgrade.cost === 10) {
       cost5UpgradeText = upgradeText;
     }
@@ -329,7 +310,6 @@ k.scene("game", () => {
       cost500UpgradeText = upgradeText;
     }
 
-    // Buy upgrade
     b.onClick(() => {
       if (clicks >= upgrade.cost) {
         if (upgrade.cost === 10 && cost5Purchased) {
@@ -359,7 +339,6 @@ k.scene("game", () => {
         upgrade.action();
         clickText.text = `Clicks: ${formatNumber(clicks)}`;
         if (chup) {
-          console.log("Upgraded character clicked!");
           chup.play("water");
           k.wait(0.1, () => {
             chup.stop();
@@ -376,13 +355,11 @@ k.scene("game", () => {
     });
   }
 
-  // Passive income loop
   k.loop(1, () => {
     clicks += passiveIncome;
     clickText.text = `Clicks: ${formatNumber(clicks)}`;
   });
 
-  // Format large numbers
   function formatNumber(num) {
     if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
     if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
@@ -390,5 +367,4 @@ k.scene("game", () => {
   }
 });
 
-// Start with the main menu scene
 k.go("mainMenu");
