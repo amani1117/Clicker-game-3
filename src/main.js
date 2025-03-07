@@ -277,7 +277,7 @@ k.scene("game", () => {
           k.area(),
         ]);
         k.wait(4, () => {
-          k.go("mainMenu",clickMultiplier+=20);
+          k.go("mainMenu",clickMultiplier+=30);
         });
       },
     },
